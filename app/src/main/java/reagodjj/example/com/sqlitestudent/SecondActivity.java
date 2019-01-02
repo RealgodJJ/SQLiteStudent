@@ -134,12 +134,14 @@ public class SecondActivity extends AppCompatActivity {
                 break;
 
             case R.id.bt_select:
-                String select = "select * from info_student";
-
-                if (!condition_id.equals("")) {
-                    select += " where _id = " + condition_id;
-                }
-                Cursor cursor = sqLiteDatabase.rawQuery(select, null);
+                //select 列名 from 表名 where 列1 = 值1 and 列2 = 值2
+                //参数2：你所要查询的列。{”name","age","gender"},查询所有传入null/{“*”}
+                //参数3：条件（针对列）
+                //参数5:分组
+                //参数6：当 group by对数据进行分组后，可以通过having来去除不符合条件的组
+                //参数7:排序
+                Cursor cursor = sqLiteDatabase.query("info_student", null,
+                        null, null, null, null, null);
 
 //                if (!condition_id.equals("")) {
 //                    select += " where _id = ?";
