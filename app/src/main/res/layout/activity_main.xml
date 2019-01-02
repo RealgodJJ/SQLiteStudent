@@ -55,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/number"
+        android:inputType="number"
         tools:ignore="Autofill,TextFields" />
 
     <LinearLayout
@@ -103,6 +104,6 @@
     <ListView
         android:id="@+id/lv_select_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
