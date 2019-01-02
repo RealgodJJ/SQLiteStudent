@@ -83,13 +83,13 @@ public class SecondActivity extends AppCompatActivity {
         final String condition_id = etNumber.getText().toString();
         switch (view.getId()) {
             case R.id.bt_insert:
-//              //在SqliteDatabase类下，提供四个方法
-//                //insert（添加）、delete（删除）、update（修改）、query（查询）
-//                //都不需要写sql语句
-//                //参数1：你所要操作的数据库表的名称
-//                //参数2：可以为空的列.  如果第三个参数是null或者说里面没有数据
-//                //那么我们的sql语句就会变为insert into info_tb () values ()  ，在语法上就是错误的
-//                //此时通过参数3指定一个可以为空的列，语句就变成了insert into info_tb (可空列) values （null）
+                //在SqliteDatabase类下，提供四个方法
+                //insert（添加）、delete（删除）、update（修改）、query（查询）
+                //都不需要写sql语句
+                //参数1：你所要操作的数据库表的名称
+                //参数2：可以为空的列.  如果第三个参数是null或者说里面没有数据
+                //那么我们的sql语句就会变为insert into info_tb () values ()  ，在语法上就是错误的
+                //此时通过参数3指定一个可以为空的列，语句就变成了insert into info_tb (可空列) values （null）
                 ContentValues values = new ContentValues();
                 //insert into 表明(列1，列2) values（值1，值2）
                 values.put("name", name);
@@ -100,31 +100,13 @@ public class SecondActivity extends AppCompatActivity {
                 break;
 
             case R.id.bt_delete:
-                if (condition_id.equals("")) {
-                    final String delete = "delete from info_student";
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
-                    builder.setIcon(R.mipmap.ic_launcher).setTitle(R.string.warning)
-                            .setMessage(R.string.sure_to_delete_all)
-                            .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    sqLiteDatabase.execSQL(delete);
-                                    Toast.makeText(SecondActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                                }
-                            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            AlertDialog alertDialog = builder.show();
-                            alertDialog.dismiss();
-                        }
-                    }).show();
-                } else {
-                    String delete = "delete from info_student where _id = ?";
-                    sqLiteDatabase.execSQL(delete, new String[]{condition_id});
-//                    String delete = "delete from info_student where _id = " + condition_id;
-//                    sqLiteDatabase.execSQL(delete);
+//                delete： 返回值：count表示影响了多少行
+//                参数1：表名
+//                参数2：条件列（“_id=? and name = ?”）
+//                参数3：条件值（new String[]{}）
+                int count = sqLiteDatabase.delete("info_student", "age<?", new String[]{age});
+                if (count > 0)
                     Toast.makeText(SecondActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                }
                 break;
 
             case R.id.bt_update:
@@ -134,19 +116,16 @@ public class SecondActivity extends AppCompatActivity {
                 break;
 
             case R.id.bt_select:
-                //select 列名 from 表名 where 列1 = 值1 and 列2 = 值2
-                //参数2：你所要查询的列。{”name","age","gender"},查询所有传入null/{“*”}
-                //参数3：条件（针对列）
-                //参数5:分组
-                //参数6：当 group by对数据进行分组后，可以通过having来去除不符合条件的组
-                //参数7:排序
-                Cursor cursor = sqLiteDatabase.query("info_student", null,
-                        null, null, null, null, null);
-
-//                if (!condition_id.equals("")) {
-//                    select += " where _id = ?";
-//                }
-//                Cursor cursor = sqLiteDatabase.rawQuery(select, new String[]{condition_id});
+//                query:
+//                参数1：表名
+//                参数2：查询列（String数组），查询所有传入null或{“*”}
+//            参数3：条件列（不需要传入null） “列1=？and 列2 =？”
+//            参数4：条件值（不需要传入null） （数组）
+//            参数5：分组（不需要传入null） group by
+//            参数6：去除不符合条件的组（不需要传入null） having
+//            参数7：排序（不需要传入null） order by
+                Cursor cursor = sqLiteDatabase.query("info_student", new String[]{"_id, name, age, gender"},
+                        "age>?", new String[]{age}, null, null, "age desc");
 
                 SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
                         R.layout.select_item, cursor, new String[]{"_id", "name", "age", "gender"},
