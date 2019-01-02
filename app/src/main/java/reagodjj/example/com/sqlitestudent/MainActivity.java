@@ -1,8 +1,10 @@
 package reagodjj.example.com.sqlitestudent;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -74,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void operate(View view) {
+        String name = etName.getText().toString();
+        String age = etAge.getText().toString();
+        final String condition_id = etNumber.getText().toString();
         switch (view.getId()) {
             case R.id.bt_insert:
-                String name = etName.getText().toString();
-                String age = etAge.getText().toString();
-
 //                String insert = "insert into info_student(name, age, gender) values ('" + name +
 //                        "', " + age + ", '" + gender + "')";
 //                sqLiteDatabase.execSQL(insert);
@@ -93,6 +95,28 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.bt_delete:
+
+                if (condition_id.equals("")) {
+                    final String delete = "delete from info_student";
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setIcon(R.mipmap.ic_launcher).setTitle(R.string.warning)
+                            .setPositiveButton(R.string.sure_a, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    sqLiteDatabase.execSQL(delete);
+                                }
+                            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+                } else {
+                    String delete = "delete from info_student where _id = ?";
+                    sqLiteDatabase.execSQL(delete, new String[]{condition_id});
+//                    String delete = "delete from info_student where _id = " + condition_id;
+//                    sqLiteDatabase.execSQL(delete);
+                }
                 break;
 
             case R.id.bt_update:
@@ -100,17 +124,16 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.bt_select:
                 String select = "select * from info_student";
-                String condition_id = etNumber.getText().toString();
-
-//                if (!condition.equals("")) {
-//                    select += " where _id = " + condition;
-//                }
-//                Cursor cursor = sqLiteDatabase.rawQuery(select, null);
 
                 if (!condition_id.equals("")) {
-                    select += " where _id = ?";
+                    select += " where _id = " + condition_id;
                 }
-                Cursor cursor = sqLiteDatabase.rawQuery(select, new String[]{condition_id});
+                Cursor cursor = sqLiteDatabase.rawQuery(select, null);
+
+//                if (!condition_id.equals("")) {
+//                    select += " where _id = ?";
+//                }
+//                Cursor cursor = sqLiteDatabase.rawQuery(select, new String[]{condition_id});
 
                 SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
                         R.layout.select_item, cursor, new String[]{"_id", "name", "age", "gender"},

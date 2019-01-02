@@ -13,4 +13,7 @@
     <string name="add_chart">添加表单成功！</string>
     <string name="database_update">数据库升级！</string>
     <string name="add_database">添加数据库成功！</string>
+    <string name="warning">警告</string>
+    <string name="sure_a">确定</string>
+    <string name="cancel">取消</string>
 </resources>
