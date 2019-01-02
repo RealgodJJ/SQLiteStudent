@@ -98,9 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (condition_id.equals("")) {
                     final String delete = "delete from info_student";
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setIcon(R.mipmap.ic_launcher).setTitle(R.string.warning)
-                            .setPositiveButton(R.string.sure_a, new DialogInterface.OnClickListener() {
+                            .setMessage(R.string.sure_to_delete_all)
+                            .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     sqLiteDatabase.execSQL(delete);
@@ -108,12 +109,14 @@ public class MainActivity extends AppCompatActivity {
                             }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                            AlertDialog alertDialog = builder.show();
+                            alertDialog.dismiss();
                         }
-                    });
+                    }).show();
                 } else {
                     String delete = "delete from info_student where _id = ?";
                     sqLiteDatabase.execSQL(delete, new String[]{condition_id});
+                    Toast.makeText(MainActivity.this, getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
 //                    String delete = "delete from info_student where _id = " + condition_id;
 //                    sqLiteDatabase.execSQL(delete);
                 }
