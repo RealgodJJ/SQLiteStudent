@@ -95,8 +95,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="operate"
-            android:text="@string/update" />
+            android:text="@string/update"
+            tools:ignore="ButtonStyle" />
+
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/lv_select_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

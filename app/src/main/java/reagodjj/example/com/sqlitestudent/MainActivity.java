@@ -1,14 +1,17 @@
 package reagodjj.example.com.sqlitestudent;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,13 +21,10 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rbMale;
     private RadioButton rbFemale;
     private EditText etNumber;
+    private ListView lvSelectItem;
 
     private SQLiteDatabase sqLiteDatabase;
     private String gender = "男";
-//    private Button btInsert;
-//    private Button btSelect;
-//    private Button btDelete;
-//    private Button btUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         rbMale = findViewById(R.id.rb_male);
         rbFemale = findViewById(R.id.rb_female);
         etNumber = findViewById(R.id.et_number);
+        lvSelectItem = findViewById(R.id.lv_select_item);
 
         rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -98,6 +99,24 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.bt_select:
+                String select = "select * from info_student";
+                String condition_id = etNumber.getText().toString();
+
+//                if (!condition.equals("")) {
+//                    select += " where _id = " + condition;
+//                }
+//                Cursor cursor = sqLiteDatabase.rawQuery(select, null);
+
+                if (!condition_id.equals("")) {
+                    select += " where _id = ?";
+                }
+                Cursor cursor = sqLiteDatabase.rawQuery(select, new String[]{condition_id});
+
+                SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
+                        R.layout.select_item, cursor, new String[]{"_id", "name", "age", "gender"},
+                        new int[]{R.id.tv_id, R.id.tv_name, R.id.tv_age, R.id.tv_gender},
+                        CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+                lvSelectItem.setAdapter(simpleCursorAdapter);
                 break;
         }
     }
