@@ -88,10 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 String insert = "insert into info_student(name, age, gender) values (?, ?, ?)";
                 sqLiteDatabase.execSQL(insert, new String[]{name, age, gender});
 
-                etName.setText("");
-                etAge.setText("");
-
-                Toast.makeText(MainActivity.this, "添加数据成功！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.add_success, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.bt_delete:
@@ -105,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     sqLiteDatabase.execSQL(delete);
+                                    Toast.makeText(MainActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
                                 }
                             }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -116,13 +114,16 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     String delete = "delete from info_student where _id = ?";
                     sqLiteDatabase.execSQL(delete, new String[]{condition_id});
-                    Toast.makeText(MainActivity.this, getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
 //                    String delete = "delete from info_student where _id = " + condition_id;
 //                    sqLiteDatabase.execSQL(delete);
+                    Toast.makeText(MainActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case R.id.bt_update:
+                String update = "update info_student set name = ?, age = ?, gender = ? where _id = ?";
+                sqLiteDatabase.execSQL(update, new String[]{name, age, gender, condition_id});
+                Toast.makeText(MainActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.bt_select:
@@ -145,5 +146,9 @@ public class MainActivity extends AppCompatActivity {
                 lvSelectItem.setAdapter(simpleCursorAdapter);
                 break;
         }
+        etName.setText("");
+        etAge.setText("");
+        etNumber.setText("");
+        rbMale.setChecked(true);
     }
 }
