@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SQLiteStudent</string>
+    <string name="name">姓名：</string>
+    <string name="age">年龄：</string>
+    <string name="gender">性别:</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="number">编号</string>
+    <string name="add">添加</string>
+    <string name="search">查询</string>
+    <string name="delete">删除</string>
+    <string name="update">修改</string>
+    <string name="add_chart">添加表单成功！</string>
+    <string name="database_update">数据库升级！</string>
+    <string name="add_database">添加数据库成功！</string>
+</resources>
