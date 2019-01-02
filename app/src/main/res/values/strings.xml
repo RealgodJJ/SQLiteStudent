@@ -20,4 +20,5 @@
     <string name="delete_success">删除成功！</string>
     <string name="update_success">更新成功！</string>
     <string name="add_success">添加成功！</string>
+    <string name="add_student_id">添加成功，新学员学号是：%1$d</string>
 </resources>
