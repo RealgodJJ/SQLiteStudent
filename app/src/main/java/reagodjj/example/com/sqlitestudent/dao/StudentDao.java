@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import reagodjj.example.com.sqlitestudent.R;
+import reagodjj.example.com.sqlitestudent.SecondActivity;
 import reagodjj.example.com.sqlitestudent.entity.Student;
 
 public class StudentDao {
@@ -74,11 +75,28 @@ public class StudentDao {
         return cursor;
     }
 
-    public void updateStudent() {
-
+    public int updateStudent(Student student, String ...strs) {
+        ContentValues values_1 = new ContentValues();
+        //insert into 表明(列1，列2) values（值1，值2）
+        values_1.put("name", student.getName());
+        values_1.put("age", student.getAge());
+        values_1.put("gender", student.getGender());
+        return sqLiteDatabase.update("info_student", values_1,
+                strs[0] + " = ?", new String[]{strs[1]});
     }
 
-    public void deleteStudent() {
-
+    public int deleteStudent(String... strs) {
+        //delete： 返回值：count表示影响了多少行
+        //参数1：表名
+        //参数2：条件列（“_id=? and name = ?”）
+        //参数3：条件值（new String[]{}）
+        int count;
+        if (!strs[0].equals("")) {
+            //统计影响数据的行数
+            count = sqLiteDatabase.delete("info_student", strs[0] + "= ?", new String[]{strs[1]});
+        } else {
+            count = sqLiteDatabase.delete("info_student", null, null);
+        }
+        return count;
     }
 }

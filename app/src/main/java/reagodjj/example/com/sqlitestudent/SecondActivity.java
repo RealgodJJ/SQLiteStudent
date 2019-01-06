@@ -76,52 +76,57 @@ public class SecondActivity extends AppCompatActivity {
                 break;
 
             case R.id.bt_delete:
-//                delete： 返回值：count表示影响了多少行
-//                参数1：表名
-//                参数2：条件列（“_id=? and name = ?”）
-//                参数3：条件值（new String[]{}）
-                int count;
+                String d_key = "";
+                String d_value = "";
                 if (!age.equals("")) {
-                    //统计影响数据的行数
-                    count = sqLiteDatabase.delete("info_student", "age<?", new String[]{age});
-                } else {
-                    count = sqLiteDatabase.delete("info_student", null, null);
+                    d_key = "age";
+                    d_value = age;
+                } else if (!condition_id.equals("")) {
+                    d_key = "_id";
+                    d_value = condition_id;
+                } else if (!name.equals("")) {
+                    d_key = "name";
+                    d_value = name;
                 }
+
+                int count;
+                if (d_key.equals(""))
+                    count = studentDao.deleteStudent();
+                else
+                    count = studentDao.deleteStudent(d_key, d_value);
                 if (count > 0)
                     Toast.makeText(SecondActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.bt_update:
-                ContentValues values_1 = new ContentValues();
-                //insert into 表明(列1，列2) values（值1，值2）
-                values_1.put("name", name);
-                values_1.put("age", age);
-                values_1.put("gender", gender);
-                int count_1 = sqLiteDatabase.update("info_student", values_1,
-                        "name like ?", new String[]{name});
+                Student student = new Student(Integer.parseInt(condition_id), name, Integer.parseInt(age),
+                        gender);
+
+                int count_1 = studentDao.updateStudent(student, "_id", condition_id);
+
                 if (count_1 > 0)
                     Toast.makeText(SecondActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.bt_select:
-                String key = "";
-                String value = "";
+                String s_key = "";
+                String s_value = "";
                 if (!age.equals("")) {
-                    key = "age";
-                    value = age;
+                    s_key = "age";
+                    s_value = age;
                 } else if (!condition_id.equals("")) {
-                    key = "_id";
-                    value = condition_id;
+                    s_key = "_id";
+                    s_value = condition_id;
                 } else if (!name.equals("")) {
-                    key = "name";
-                    value = name;
+                    s_key = "name";
+                    s_value = name;
                 }
 
                 Cursor cursor;
-                if (key.equals(""))
+                if (s_key.equals(""))
                     cursor = studentDao.selectStudent();
                 else {
-                    cursor = studentDao.selectStudent(key, value);
+                    cursor = studentDao.selectStudent(s_key, s_value);
                 }
 
                 SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
