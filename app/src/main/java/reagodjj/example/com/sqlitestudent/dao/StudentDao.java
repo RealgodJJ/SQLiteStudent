@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import reagodjj.example.com.sqlitestudent.R;
-import reagodjj.example.com.sqlitestudent.SecondActivity;
 import reagodjj.example.com.sqlitestudent.entity.Student;
 
 public class StudentDao {
@@ -98,5 +99,19 @@ public class StudentDao {
             count = sqLiteDatabase.delete("info_student", null, null);
         }
         return count;
+    }
+
+    public ArrayList<Student> getStudentInList(String... strs){
+        ArrayList<Student> list = new ArrayList<>();
+        Cursor cursor = selectStudent(strs);
+        while (cursor.moveToNext()){
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            int age = cursor.getInt(2);
+            String gender = cursor.getString(3);
+            Student s = new Student(id,name,age,gender);
+            list.add(s);
+        }
+        return list;
     }
 }

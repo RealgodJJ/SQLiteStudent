@@ -28,7 +28,6 @@ public class SecondActivity extends AppCompatActivity {
     private ListView lvSelectItem;
 
     private StudentDao studentDao;
-    private SQLiteDatabase sqLiteDatabase;
     private String gender = "男";
 
     @Override
